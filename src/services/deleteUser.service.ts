@@ -1,16 +1,16 @@
 import { AppDataSource } from "../data-source";
 import { User } from "../entities/user.entity";
 
-const deleteUserService = async (email: string) => {
+const deleteUserService = async (userId: string): Promise<void> => {
   const userRepository = AppDataSource.getRepository(User);
 
-  const users = await userRepository.find();
+  const user = await userRepository.findOneBy({ id: userId });
 
-  const account = users.find((user) => user.email === email);
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-  await userRepository.delete(account!.id);
-
-  return true;
+  await userRepository.save(user);
 };
 
 export default deleteUserService;
