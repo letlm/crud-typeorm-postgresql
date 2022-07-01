@@ -1,7 +1,8 @@
 import { DataSource } from "typeorm";
-import "dotenv/config";
+// import "dotenv/config";
+require("dotenv").config();
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST,
   port: 5432,
@@ -21,5 +22,3 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error during Data Source initialization", err);
   });
-
-export default AppDataSource;

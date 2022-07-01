@@ -6,8 +6,11 @@ const createUserController = async (req: Request, res: Response) => {
     const { name, email, password, age } = req.body;
 
     const newUser = await createUserService({ name, email, password, age });
-
-    return res.status(201).send(newUser);
+    console.log(newUser);
+    const { id, created_at, updated_at } = newUser;
+    return res
+      .status(201)
+      .send({ id, name, email, age, created_at, updated_at });
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).send({

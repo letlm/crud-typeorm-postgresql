@@ -5,17 +5,17 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
 } from "typeorm";
-// import { v4 as uuid } from "uuid";
+import { v4 as uuid } from "uuid";
 
 @Entity("users")
 class User {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  readonly id: string;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -29,6 +29,12 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
 }
 
 export { User };
