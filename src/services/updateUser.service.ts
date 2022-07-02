@@ -1,37 +1,41 @@
-// import { AppDataSource } from "../data-source";
-// import { User } from "../entities/user.entity";
+import { AppDataSource } from "../data-source";
+import { User } from "../entities/user.entity";
+import bcrypt from "bcryptjs";
 
-// const updateUserService = async (
-//   id: string,
-//   nameReceived: string,
-//   emailReceived: string,
-//   ageReceived: number
-// ) => {
-//   const userRepository = AppDataSource.getRepository(User);
+const updateUserService = async (
+  id: string,
+  nameReceived: string,
+  emailReceived: string,
 
-//   const users = await userRepository.find();
+  ageReceived: number
+) => {
+  const userRepository = AppDataSource.getRepository(User);
 
-//   const userIndex = users.findIndex((user) => user.id === id);
+  const account = await userRepository.findOneBy({ id: id });
 
-//   if (userIndex === -1) {
-//     throw new Error("Usuário não encontrado");
-//   }
+  //   if (bcrypt.compareSync(passwordReceived, account!.password)) {
+  //     throw new Error("Inform a different password.");
+  //   }
 
-//   const user = users[userIndex];
+  //   const newPassword = bcrypt.hashSync(passwordReceived, 10);
 
-//   if (nameReceived) {
-//     user.name = nameReceived;
-//   }
+  const newName = nameReceived;
 
-//   if (emailReceived) {
-//     user.email = emailReceived;
-//   }
+  const newEmail = emailReceived;
 
-//   if (ageReceived) {
-//     user.age = ageReceived;
-//   }
+  const newAge = ageReceived;
 
-//   user.updated_at = new Date()
-// };
+  await userRepository.update(account!.id, {
+    id: id,
+    name: newName,
+    email: newEmail,
+    age: newAge,
 
-// export default updateUserService;
+    created_at: account!.created_at,
+    updated_at: new Date(),
+  });
+
+  return true;
+};
+
+export default updateUserService;
