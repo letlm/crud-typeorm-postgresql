@@ -6,7 +6,7 @@ const createUserController = async (req: Request, res: Response) => {
     const { name, email, password, age } = req.body;
 
     const newUser = await createUserService({ name, email, password, age });
-    console.log(newUser);
+
     const { id, created_at, updated_at } = newUser;
     return res
       .status(201)

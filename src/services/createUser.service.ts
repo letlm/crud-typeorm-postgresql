@@ -2,6 +2,7 @@ import { IUserRequest } from "../interfaces";
 import { User } from "../entities/user.entity";
 import { AppDataSource } from "../data-source";
 import { hash } from "bcryptjs";
+import { AppError } from "../errors/AppError";
 
 const createUserService = async ({
   name,
@@ -18,7 +19,7 @@ const createUserService = async ({
   });
 
   if (findUser) {
-    throw new Error("User already exists");
+    throw new AppError("User already exists", 400);
   }
 
   const hashedPassword = await hash(password, 10);
