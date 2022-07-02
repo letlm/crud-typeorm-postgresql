@@ -3,14 +3,14 @@ import deleteUserService from "../services/deleteUser.service";
 
 const deleteUserController = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId;
+    const id = req.params.id;
 
-    await deleteUserService(userId);
+    await deleteUserService(id);
 
     return res.status(200).json({ message: "User deleted with sucess!" });
   } catch (err) {
     if (err instanceof Error) {
-      return res.status(401).send({
+      return res.status(404).send({
         error: err.name,
         message: err.message,
       });
