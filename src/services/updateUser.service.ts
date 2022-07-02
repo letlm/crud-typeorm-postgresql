@@ -1,6 +1,7 @@
 import { AppDataSource } from "../data-source";
 import { User } from "../entities/user.entity";
 import bcrypt from "bcryptjs";
+import { AppError } from "../errors/AppError";
 
 const updateUserService = async (
   id: string,
@@ -13,11 +14,9 @@ const updateUserService = async (
 
   const account = await userRepository.findOneBy({ id: id });
 
-  //   if (bcrypt.compareSync(passwordReceived, account!.password)) {
-  //     throw new Error("Inform a different password.");
-  //   }
-
-  //   const newPassword = bcrypt.hashSync(passwordReceived, 10);
+  if (!account) {
+    throw new AppError("User not found", 404);
+  }
 
   const newName = nameReceived;
 
